@@ -1,0 +1,16 @@
+Plan
+
+Build a to-do list app without a ui at first
+
+After building the app in the command line, build the ui
+
+We should have the following classes w/ the following properties
+    - ProjectList
+    - Project
+        - title
+        - description
+        - priority
+    - ToDo
+        - title
+        - description
+        - priority
