@@ -2,6 +2,7 @@ class ProjectList {
     constructor() {
         this.projects = [];
         this.localProjectList;
+        this.initializeProjectList();
     }
 
     getLocalStorage() {
@@ -63,7 +64,7 @@ class ToDo {
 
 
 const projectList = new ProjectList;
-projectList.initializeProjectList();
+// projectList.initializeProjectList();
 // let refProj = projectList.addProject("doodoo project", "doodoo", 12)
 console.log(projectList.projects);
 // // projectList.removeProject(refProj);
