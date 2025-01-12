@@ -28,10 +28,12 @@ class ProjectList {
         const newProject = new Project(title, description, priority);
         this.projects.push(newProject);
         this.saveToLocalStorage();
+        return newProject;
     }
 
     removeProject(projectToRemove) {
-        this.projects = this.projects.filter((project) => project != projectToRemove)
+        this.projects = this.projects.filter((project) => project != projectToRemove);
+        this.saveToLocalStorage();
     }
 
 }
@@ -55,4 +57,7 @@ class ToDo {
 
 const projectList = new ProjectList;
 projectList.initializeProjectList();
+let refProj = projectList.addProject("doodoo project", "doodoo", 12)
+console.log(projectList.projects);
+projectList.removeProject(refProj);
 console.log(projectList.projects);
