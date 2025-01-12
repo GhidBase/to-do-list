@@ -14,3 +14,19 @@ We should have the following classes w/ the following properties
         - title
         - description
         - priority
+
+
+I need to make a function that checks if there
+is a created projects array or not already
+
+
+BIG PLAN
+
+Use Class Syntax
+Separate dom modification from logic
+Use composition instead of inheritance
+Use WebPack
+Use Date-FNs (node module)
+Use this to format and manipulate dates and times
+Use local storage to save their to-do lists
+Apply SOLID concepts
