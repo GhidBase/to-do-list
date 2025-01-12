@@ -16,9 +16,6 @@ We should have the following classes w/ the following properties
         - priority
 
 
-I need to make a function that checks if there
-is a created projects array or not already
-
 
 BIG PLAN
 
