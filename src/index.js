@@ -1,9 +1,9 @@
 class ProjectList {
         static projects = [];
         static localProjectList;
-        static {
-            ProjectList.initializeProjectList();
-        }
+        // static {
+        //     ProjectList.initializeProjectList();
+        // }
 
     static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
@@ -19,6 +19,11 @@ class ProjectList {
         console.log("\ninitializing project list object")
         if (ProjectList.getLocalStorage()) {
             this.projects = JSON.parse(this.localProjectList);
+            this.projects = this.projects.map((element) => {
+                console.log(element);
+                let project = new Project(element.title, element.description, element.priority);
+                return project;
+            })
         }
         else {
             ProjectList.saveToLocalStorage();
@@ -72,9 +77,14 @@ class Project {
         console.log("Render " + this.title + " (not implemented yet)");
     }
 
-    createToDo(title, description, priority) {
+    addToDo(title, description, priority) {
         let newToDo = new ToDo(title, description, priority);
         this.toDos.push(newToDo);
+        ProjectList.saveToLocalStorage();
+    }
+
+    clearToDos() {
+        this.toDos = [];
         ProjectList.saveToLocalStorage();
     }
 }
@@ -87,9 +97,9 @@ class ToDo {
     }
 }
 
+window.ProjectList = ProjectList;
 
-
-
+ProjectList.initializeProjectList();
 
 // ProjectList.clearProjects();
 // ProjectList.addProject("myFavoriteProject","It's my first",10);
