@@ -28,9 +28,12 @@
 
 
 --general-spacing: clamp(20px, calc(-25px + (10dvw * .4)), 30px);
-font-family: 'roboto';
+
 }
 
+* {
+    font-family: 'roboto';
+}
 
 /*
     I STILL NEED TO MAKE THE CHECK
@@ -48,21 +51,74 @@ body {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
-    gap: var(--general-spacing);
-    padding: var(--general-spacing);
+    /* gap: var(--general-spacing);
+    padding: var(--general-spacing); */
     box-sizing: border-box;
 }
 
 #projects,
 #to-dos {
-    background-color: var(--surface);
+    /* background-color: var(--surface);
+    border-radius: var(--general-spacing); */
     padding: var(--general-spacing);
-    border-radius: var(--general-spacing);
+    gap: var(--general-spacing);
+
+    display: flex;
+    flex-direction: column;
 }
 
 #projects h1,
 #to-dos h1 {
-    color: var(--on-surface);
+    color: var(--on-background);
     margin: 0;
     font-weight: 400;
+}
+
+#projects .project,
+#to-dos .to-do {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    padding: var(--general-spacing);
+    border-radius: var(--general-spacing);
+}
+
+.project .buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: calc(var(--general-spacing)/4);
+}
+
+.buttons .buttons-inner {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.project #edit {
+    background-color: var(--primary);
+    border: 0;
+    color: var(--on-primary);
+    font-weight: 600;
+    font-size: 1em;
+    padding: calc(var(--general-spacing)/8) calc(var(--general-spacing)/4) calc(var(--general-spacing)/8) calc(var(--general-spacing)/1.5);
+    margin: 0;
+    border-radius: calc(var(--general-spacing)/2);
+
+    display: flex;
+    align-items: center;
+    min-width: 145px;
+    box-sizing: content-box;
+    margin-top: calc(var(--general-spacing)/4);
+}
+
+.project button {
+    background-color: transparent;
+    border: 0;
+    font-size: 1em;
+}
+
+.project img,
+.to-do img {
+    height: 2em;
 }
