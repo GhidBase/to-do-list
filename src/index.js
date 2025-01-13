@@ -12,7 +12,9 @@ class ProjectList {
 
     static saveToLocalStorage() {
         console.log("saving to local storage");
-        localStorage.setItem("projects", JSON.stringify(this.projects))
+        const serializedProjects  = JSON.stringify(this.projects);
+        localStorage.setItem("projects", serializedProjects);
+        this.localProjectList = serializedProjects;
     }
 
     static initializeProjectList() {
@@ -44,6 +46,7 @@ class ProjectList {
 
     static editProject(projectToEdit, title, description, priority) {
         projectToEdit.updateDetails(title, description, priority);
+        ProjectList.saveToLocalStorage();
     }
 
     static clearProjects() {
@@ -65,7 +68,6 @@ class Project {
         this.description = description;
         this.priority = priority;
         this.toDos = toDos;
-        console.log("toDo list: " + this.toDos);
         this.initializeToDoList();
     }
 
