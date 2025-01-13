@@ -1,54 +1,54 @@
 class ProjectList {
-    constructor() {
-        this.projects = [];
-        this.localProjectList;
-        this.initializeProjectList();
-    }
+        static projects = [];
+        static localProjectList;
+        static {
+            ProjectList.initializeProjectList();
+        }
 
-    getLocalStorage() {
+    static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
         return this.localProjectList;
     }
 
-    saveToLocalStorage() {
+    static saveToLocalStorage() {
         console.log("saving to local storage");
         localStorage.setItem("projects", JSON.stringify(this.projects))
     }
 
-    initializeProjectList() {
+    static initializeProjectList() {
         console.log("\ninitializing project list object")
-        if (this.getLocalStorage()) {
+        if (ProjectList.getLocalStorage()) {
             this.projects = JSON.parse(this.localProjectList);
         }
         else {
-            this.saveToLocalStorage();
+            ProjectList.saveToLocalStorage();
         }
     }
     
-    addProject(title, description, priority) {
-        const newProject = new Project(title, description, priority);
+    static addProject(title, description, priority) {
+        const newProject = new Project(title, description, priority, this);
         this.projects.push(newProject);
-        this.saveToLocalStorage();
+        ProjectList.saveToLocalStorage();
         return newProject;
     }
 
-    removeProject(projectToRemove) {
+    static removeProject(projectToRemove) {
         this.projects = this.projects.filter((project) => project != projectToRemove);
-        this.saveToLocalStorage();
+        ProjectList.saveToLocalStorage();
     }
 
-    editProject(projectToEdit, title, description, priority) {
+    static editProject(projectToEdit, title, description, priority) {
         projectToEdit.updateDetails(title, description, priority);
     }
 
-    clearProjects() {
+    static clearProjects() {
         if (localStorage)
         localStorage.removeItem("projects");
         this.localProjectList = [];
         this.projects = [];
     }
 
-    renderProjectList() {
+    static renderProjectList() {
         console.log("Removing projects from list parent (not implemented yet)")
         this.projects.forEach((project) => {project.render()})
     }
@@ -56,9 +56,10 @@ class ProjectList {
 
 class Project {
     constructor(title, description, priority) {
-        this.title = title,
-        this.description = description,
-        this.priority = priority
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.toDos = [];
     }
 
     updateDetails(title, description, priority) {
@@ -68,7 +69,13 @@ class Project {
     }
 
     render() {
-        console.log("Rendere " + this.title + " (not implemented yet)");
+        console.log("Render " + this.title + " (not implemented yet)");
+    }
+
+    createToDo(title, description, priority) {
+        let newToDo = new ToDo(title, description, priority);
+        this.toDos.push(newToDo);
+        ProjectList.saveToLocalStorage();
     }
 }
 
@@ -81,10 +88,13 @@ class ToDo {
 }
 
 
-const projectList = new ProjectList;
-// projectList.initializeProjectList();
-// let refProj = projectList.addProject("doodoo project", "doodoo", 12)
-// console.log(projectList.projects);
-// // projectList.removeProject(refProj);
-// projectList.clearProjects();
-// console.log(projectList.projects);
+
+
+
+// ProjectList.clearProjects();
+// ProjectList.addProject("myFavoriteProject","It's my first",10);
+// let newProj = ProjectList.addProject("myFavoriteProject","It's my first",10);
+// // console.log(projectList.projects);
+
+// newProj.createToDo("newToDo", "My very first ToDO!", 15)
+console.log(ProjectList.projects)

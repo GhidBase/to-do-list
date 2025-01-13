@@ -33,7 +33,18 @@ Apply SOLID concepts
 
 Current actual steps
 Finish adding functionality then do DOM
+Add To-Do functionality
+Project:
+    attributes:
+        toDos array
 
+    functions:
+        initializeProject - creates all the to-dos in localStorage
+        Add Todo
+        Edit todo
+        Delete todo
+        Render todo list
+        Clear ToDos
 
 Once I finish functionality:
 Add steps to
