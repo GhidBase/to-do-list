@@ -123,3 +123,26 @@ body {
 .to-do img {
     height: 2em;
 }
+
+h2 {
+    margin-top: 0;
+}
+
+.to-do .buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.to-do .buttons-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.to-do button {
+        background-color: transparent;
+        border: 0;
+        font-size: 1em;
+        margin-top: calc(var(--general-spacing)/4);
+}
