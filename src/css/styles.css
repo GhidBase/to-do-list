@@ -116,6 +116,7 @@ body {
     background-color: transparent;
     border: 0;
     font-size: 1em;
+    margin-top: calc(var(--general-spacing)/4);
 }
 
 .project img,
