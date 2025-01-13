@@ -37,6 +37,10 @@ class ProjectList {
         this.saveToLocalStorage();
     }
 
+    editProject(projectToEdit, title, description, priority) {
+        projectToEdit.updateDetails(title, description, priority);
+    }
+
     clearProjects() {
         if (localStorage)
         localStorage.removeItem("projects");
@@ -44,6 +48,10 @@ class ProjectList {
         this.projects = [];
     }
 
+    renderProjectList() {
+        console.log("Removing projects from list parent (not implemented yet)")
+        this.projects.forEach((project) => {project.render()})
+    }
 }
 
 class Project {
@@ -51,6 +59,16 @@ class Project {
         this.title = title,
         this.description = description,
         this.priority = priority
+    }
+
+    updateDetails(title, description, priority) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+    }
+
+    render() {
+        console.log("Rendere " + this.title + " (not implemented yet)");
     }
 }
 
@@ -66,7 +84,7 @@ class ToDo {
 const projectList = new ProjectList;
 // projectList.initializeProjectList();
 // let refProj = projectList.addProject("doodoo project", "doodoo", 12)
-console.log(projectList.projects);
+// console.log(projectList.projects);
 // // projectList.removeProject(refProj);
 // projectList.clearProjects();
 // console.log(projectList.projects);

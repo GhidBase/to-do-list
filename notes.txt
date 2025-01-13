@@ -24,6 +24,23 @@ Separate dom modification from logic
 Use composition instead of inheritance
 Use WebPack
 Use Date-FNs (node module)
-Use this to format and manipulate dates and times
+    Use this to format and manipulate dates and times
 Use local storage to save their to-do lists
 Apply SOLID concepts
+
+
+
+
+Current actual steps
+Finish adding functionality then do DOM
+
+
+Once I finish functionality:
+Add steps to
+renderProjectList() that remove the divs
+inside of the projectList parent, and
+add functionality to Project.render()
+that appends them back. If the element
+was already created we can reuse it,
+if it doesn't have an assigned element we
+can create one then append it
