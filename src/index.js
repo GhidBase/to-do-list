@@ -31,7 +31,7 @@ class ProjectList {
     }
     
     static addProject(title, description, priority) {
-        const newProject = new Project(title, description, priority, this);
+        const newProject = new Project(title, description, priority);
         this.projects.push(newProject);
         ProjectList.saveToLocalStorage();
         return newProject;
@@ -65,6 +65,7 @@ class Project {
         this.description = description;
         this.priority = priority;
         this.toDos = toDos;
+        console.log("toDo list: " + this.toDos);
         this.initializeToDoList();
     }
 

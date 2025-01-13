@@ -43,10 +43,6 @@ Project:
         Clear ToDos
 
 
-I need to initialize projects
-whenever I getLocalStorage
-
-
 Once I finish functionality:
 Add steps to
 renderProjectList() that remove the divs
