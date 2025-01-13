@@ -87,6 +87,16 @@ class Project {
         ProjectList.saveToLocalStorage();
     }
 
+    editToDo(toDoToEdit, title, description, priority) {
+        toDoToEdit.updateDetails(title, description, priority);
+        ProjectList.saveToLocalStorage();
+    }
+
+    removeToDo(toDoToRemove) {
+        this.toDos = this.toDos.filter((element) => element != toDoToRemove);
+        ProjectList.saveToLocalStorage();
+    }
+
     clearToDos() {
         this.toDos = [];
         ProjectList.saveToLocalStorage();
@@ -106,8 +116,10 @@ class ToDo {
         this.priority = priority
     }
 
-    consoleMessage() {
-        console.log(this.title);
+    updateDetails(title, description, priority) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
     }
 }
 
