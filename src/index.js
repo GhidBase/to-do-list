@@ -107,6 +107,13 @@ class Project {
             return new ToDo(element.title, element.description, element.priority);
         })
     }
+
+    renderProject() {
+        const tempContainer = document.createElement("div");
+        tempContainer.innerHTML = projectTemplate;
+
+        projectsNode.appendChild(tempContainer);
+    }
 }
 
 class ToDo {
@@ -128,3 +135,8 @@ window.ProjectList = ProjectList;
 ProjectList.initializeProjectList();
 
 import "./css/styles.css";
+
+const projectsNode = document.querySelector("#projects");
+import projectTemplate from "./templates/project.html";
+
+ProjectList.projects[0].renderProject();
