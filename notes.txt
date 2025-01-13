@@ -36,12 +36,6 @@ Finish adding functionality then do DOM
 Add To-Do functionality
 Project:
 
-    functions:
-        initializeProject - creates all the to-dos in localStorage
-        Edit todo
-        Delete todo
-        Clear ToDos
-
 
 Once I finish functionality:
 Add steps to
