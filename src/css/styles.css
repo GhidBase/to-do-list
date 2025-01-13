@@ -51,8 +51,8 @@ body {
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
-    /* gap: var(--general-spacing);
-    padding: var(--general-spacing); */
+    gap: var(--general-spacing);
+    padding: var(--general-spacing);
     box-sizing: border-box;
 }
 
@@ -60,7 +60,7 @@ body {
 #to-dos {
     /* background-color: var(--surface);
     border-radius: var(--general-spacing); */
-    padding: var(--general-spacing);
+    /* padding: var(--general-spacing); */
     gap: var(--general-spacing);
 
     display: flex;
