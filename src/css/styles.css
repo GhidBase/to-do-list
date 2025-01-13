@@ -1,0 +1,68 @@
+:root {/* MY DARK MODE COLOR SCHEME */
+
+/* 1. Background (0dp elevation surface overlay) */
+--background: #121212; /* Dark grey for the background */
+
+/* 2. Surface (with 1dp elevation surface overlay) */
+--surface: #1E1E1E; /* Slightly lighter grey for surfaces */
+--surface-overlay: rgba(255, 255, 255, 0.08); /* Subtle overlay for 1dp elevation */
+
+/* 3. Primary */
+--primary: #BB86FC; /* Soft purple (Material Design default for dark mode) */
+
+/* 4. Secondary */
+--secondary: #03DAC6; /* Teal for secondary highlights */
+
+/* 5. On background */
+--on-background: #FFFFFF; /* White for text/icons on the background */
+
+/* 6. On surface */
+--on-surface: #E0E0E0; /* Light grey for text/icons on the surface */
+
+/* 7. On Primary */
+--on-primary: #000000; /* Black for text/icons on primary color */
+
+/* 8. On Secondary */
+--on-secondary: #000000; /* Black for text/icons on secondary color */
+
+
+
+--general-spacing: clamp(20px, calc(-25px + (10dvw * .4)), 30px);
+font-family: 'roboto';
+}
+
+
+/*
+    I STILL NEED TO MAKE THE CHECK
+    FUNCTIONALITY ON PROJECTS AND
+    TO-DOS
+*/
+
+
+body {
+    height: 100dvh;
+    width: 100dvw;
+    margin: 0;
+
+    background-color: var(--background);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    gap: var(--general-spacing);
+    padding: var(--general-spacing);
+    box-sizing: border-box;
+}
+
+#projects,
+#to-dos {
+    background-color: var(--surface);
+    padding: var(--general-spacing);
+    border-radius: var(--general-spacing);
+}
+
+#projects h1,
+#to-dos h1 {
+    color: var(--on-surface);
+    margin: 0;
+    font-weight: 400;
+}

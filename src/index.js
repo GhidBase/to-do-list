@@ -127,10 +127,4 @@ window.ProjectList = ProjectList;
 
 ProjectList.initializeProjectList();
 
-// ProjectList.clearProjects();
-// ProjectList.addProject("myFavoriteProject","It's my first",10);
-// let newProj = ProjectList.addProject("myFavoriteProject","It's my first",10);
-// // console.log(projectList.projects);
-
-// newProj.createToDo("newToDo", "My very first ToDO!", 15)
-console.log(ProjectList.projects)
+import "./css/styles.css";
