@@ -21,7 +21,7 @@ class ProjectList {
             this.projects = JSON.parse(this.localProjectList);
             this.projects = this.projects.map((element) => {
                 console.log(element);
-                let project = new Project(element.title, element.description, element.priority);
+                let project = new Project(element.title, element.description, element.priority, element.toDos);
                 return project;
             })
         }
@@ -60,11 +60,12 @@ class ProjectList {
 }
 
 class Project {
-    constructor(title, description, priority) {
+    constructor(title, description, priority, toDos = []) {
         this.title = title;
         this.description = description;
         this.priority = priority;
-        this.toDos = [];
+        this.toDos = toDos;
+        this.initializeToDoList();
     }
 
     updateDetails(title, description, priority) {
@@ -87,6 +88,12 @@ class Project {
         this.toDos = [];
         ProjectList.saveToLocalStorage();
     }
+
+    initializeToDoList() {
+        this.toDos = this.toDos.map((element) => {
+            return new ToDo(element.title, element.description, element.priority);
+        })
+    }
 }
 
 class ToDo {
@@ -94,6 +101,10 @@ class ToDo {
         this.title = title,
         this.description = description,
         this.priority = priority
+    }
+
+    consoleMessage() {
+        console.log(this.title);
     }
 }
 
