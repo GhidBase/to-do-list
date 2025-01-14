@@ -89,6 +89,12 @@ class ProjectList {
         projectsHeader.textContent = "Projects";
         projectsNode.appendChild(projectsHeader);
         this.projects.forEach((project, index) => {project.renderProject(index)});
+
+        const addProjectButton = document.createElement("div");
+        addProjectButton.classList.add("add-project-button");
+        addProjectButton.addEventListener("click", () => ProjectList.addProject())
+        addProjectButton.innerHTML = addProjectTemplate;
+        projectsNode.appendChild(addProjectButton);
     }
 }
 
@@ -209,6 +215,6 @@ const projectsNode = document.querySelector("#projects");
 const toDosNode = document.querySelector("#to-dos");
 import projectTemplate from "./templates/project.html";
 import toDoTemplate from "./templates/to-do.html";
-
+import addProjectTemplate from "./templates/add-project.html"
 
 ProjectList.initializeProjectList();

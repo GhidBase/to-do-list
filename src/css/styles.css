@@ -146,3 +146,23 @@ h2 {
         font-size: 1em;
         margin-top: calc(var(--general-spacing)/4);
 }
+
+.add-project-button {
+    padding: 0;
+    border-radius: var(--general-spacing);
+
+    text-align: center;
+}
+
+.add-project-inner {
+
+    padding: calc(var(--general-spacing)/2) calc(var(--general-spacing));
+    border-radius: var(--general-spacing);
+    font-weight: 600;
+    font-size: 1em;
+    width: 100%;
+
+    background-color: var(--primary);
+    color: var(--on-primary);
+    border: 0;
+}
