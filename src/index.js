@@ -94,6 +94,13 @@ class ProjectList {
         addProjectButton.innerHTML = addProjectTemplate;
         projectsNode.appendChild(addProjectButton);
     }
+
+    static openProjectEditPanel() {
+        const projectEditPanel = document.createElement("div");
+        projectEditPanel.classList.add("edit-panel");
+        projectEditPanel.innerHTML = editPanelTemplate;
+        document.body.appendChild(projectEditPanel);
+    }
 }
 
 class Project {
@@ -218,7 +225,9 @@ const projectsNode = document.querySelector("#projects");
 const toDosNode = document.querySelector("#to-dos");
 import projectTemplate from "./templates/project.html";
 import toDoTemplate from "./templates/to-do.html";
-import addProjectTemplate from "./templates/add-project.html"
-import addToDoTemplate from "./templates/add-to-do.html"
+import addProjectTemplate from "./templates/add-project.html";
+import addToDoTemplate from "./templates/add-to-do.html";
+import editPanelTemplate from "./templates/edit-project-window.html";
 
 ProjectList.initializeProjectList();
+ProjectList.openProjectEditPanel();
