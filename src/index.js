@@ -26,7 +26,11 @@ class ProjectList {
                 return project;
             })
         ProjectList.renderProjectList();
+        if (ProjectList.projects[0] == undefined) {
+            ProjectList.addProject("Default project", "", 5);
+        }
         ProjectList.projects[ProjectList.defaultProjectToLoad].renderToDoList();
+        
         }
         else {
             ProjectList.saveToLocalStorage();
