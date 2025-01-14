@@ -5,3 +5,6 @@ Use Date-FNs (node module)
 Apply SOLID concepts
 
 Connect buttons to logic
+
+Close the window when pressing submit
+Create a project when pressing submit

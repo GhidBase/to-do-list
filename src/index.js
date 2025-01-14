@@ -1,8 +1,26 @@
 class ProjectList {
-        static projects = [];
-        static localProjectList;
-        static defaultProjectToLoad = 0;
-        static lastActiveProject = 0;
+    static projects = [];
+    static localProjectList;
+    static defaultProjectToLoad = 0;
+    static lastActiveProject = 0;
+    static projectEditPanel = document.createElement("div");
+    
+    static {
+        ProjectList.projectEditPanel.classList.add("edit-panel");
+        ProjectList.projectEditPanel.innerHTML = editPanelTemplate;
+    }
+
+    static form = ProjectList.projectEditPanel.querySelector(".edit-panel-actual");
+    static {
+        ProjectList.form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            ProjectList.closeProjectEditPanel();
+        })
+    }
+    static formTitle = ProjectList.form.querySelector(".title");
+    static formDescription = ProjectList.form.querySelector(".description");
+    static formPriority = ProjectList.form.querySelector(".priority");
+        
 
     static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
@@ -90,16 +108,17 @@ class ProjectList {
 
         const addProjectButton = document.createElement("div");
         addProjectButton.classList.add("add-project-button");
-        addProjectButton.addEventListener("click", () => ProjectList.addProject())
+        addProjectButton.addEventListener("click", () => ProjectList.showProjectEditPanel())
         addProjectButton.innerHTML = addProjectTemplate;
         projectsNode.appendChild(addProjectButton);
     }
 
-    static openProjectEditPanel() {
-        const projectEditPanel = document.createElement("div");
-        projectEditPanel.classList.add("edit-panel");
-        projectEditPanel.innerHTML = editPanelTemplate;
-        document.body.appendChild(projectEditPanel);
+    static showProjectEditPanel() {
+        document.body.appendChild(ProjectList.projectEditPanel);
+    }
+
+    static closeProjectEditPanel() {
+        document.body.removeChild(ProjectList.projectEditPanel)
     }
 }
 
@@ -230,4 +249,4 @@ import addToDoTemplate from "./templates/add-to-do.html";
 import editPanelTemplate from "./templates/edit-project-window.html";
 
 ProjectList.initializeProjectList();
-ProjectList.openProjectEditPanel();
+ProjectList.showProjectEditPanel();
