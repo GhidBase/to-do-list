@@ -42,11 +42,26 @@ class ProjectList {
         return newProject;
     }
 
-    static removeProject(projectToRemove) {
-        if (projectToRemove = ProjectList.lastActiveProject) {
-            projectToRemove.clearToDoRenders()
+    // static removeProject(projectToRemove) {
+    //     console.log("Removing project at index " + projectToRemove.arrayIndex)
+    //     if (projectToRemove = ProjectList.lastActiveProject) {
+    //         projectToRemove.clearToDoRenders()
+    //     }
+    //     this.projects = this.projects.filter((project) => project != projectToRemove);
+    //     ProjectList.saveToLocalStorage();
+    //     ProjectList.renderProjectList();
+    // }
+
+    static removeProject(arrayIndex) {
+        console.log("deleting item at index " + arrayIndex);
+        if (ProjectList.lastActiveProject == arrayIndex) {
+            console.log("Current active project is being deleted.");
+            console.log("Resetting to-do list render");
+            ProjectList.projects[arrayIndex].clearToDos();
+            ProjectList.projects[arrayIndex].renderToDoList();
         }
-        this.projects = this.projects.filter((project) => project != projectToRemove);
+
+        ProjectList.projects = ProjectList.projects.filter((project) => ProjectList.projects[arrayIndex] != project);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
     }
@@ -69,7 +84,7 @@ class ProjectList {
         const projectsHeader = document.createElement("h1");
         projectsHeader.textContent = "Projects";
         projectsNode.appendChild(projectsHeader);
-        this.projects.forEach((project) => {project.renderProject()});
+        this.projects.forEach((project, index) => {project.renderProject(index)});
     }
 }
 
@@ -91,10 +106,6 @@ class Project {
         this.title = title;
         this.description = description;
         this.priority = priority;
-    }
-
-    render() {
-        console.log("Render " + this.title + " (not implemented yet)");
     }
 
     addToDo(title, description, priority) {
@@ -129,12 +140,16 @@ class Project {
         })
     }
 
-    renderProject() {
+    renderProject(index) {
+        this.arrayIndex = index;
         const tempContainer = document.createElement("div");
         tempContainer.innerHTML = projectTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
+        
+        tempContainer.querySelector(".view-button").addEventListener("click", () => this.renderToDoList())
+        tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.removeProject(this.arrayIndex))
 
         projectsNode.appendChild(tempContainer);
     }
@@ -142,7 +157,8 @@ class Project {
     renderToDoList() {
         this.clearToDoRenders();
         this.toDos.forEach((element) => element.renderToDo())
-        ProjectList.lastActiveProject = this;
+        ProjectList.lastActiveProject = this.arrayIndex;
+        console.log("Last active project was at index " + ProjectList.lastActiveProject)
     }
 
     clearToDoRenders() {
@@ -168,7 +184,6 @@ class ToDo {
     }
 
     renderToDo() {
-        console.log("ProjectIndex = " + this.projectIndex)
         const tempContainer = document.createElement("div");
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
