@@ -63,6 +63,9 @@ class ProjectList {
     static renderProjectList() {
         console.log("Removing projects from list parent (not implemented yet)")
         projectsNode.innerHTML = "";
+        const projectsHeader = document.createElement("h1");
+        projectsHeader.textContent = "Projects";
+        projectsNode.appendChild(projectsHeader);
         this.projects.forEach((project) => {project.renderProject(project.title, project.description, project.priority)})
     }
 }
