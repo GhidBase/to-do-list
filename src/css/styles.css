@@ -147,14 +147,16 @@ h2 {
         margin-top: calc(var(--general-spacing)/4);
 }
 
-.add-project-button {
+.add-project-button,
+.add-to-do-button {
     padding: 0;
     border-radius: var(--general-spacing);
 
     text-align: center;
 }
 
-.add-project-inner {
+.add-project-inner,
+.add-to-do-inner {
 
     padding: calc(var(--general-spacing)/2) calc(var(--general-spacing));
     border-radius: var(--general-spacing);

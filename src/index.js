@@ -59,8 +59,6 @@ class ProjectList {
     static removeProject(arrayIndex) {
         console.log("deleting item at index " + arrayIndex);
         if (ProjectList.lastActiveProject == arrayIndex) {
-            console.log("Current active project is being deleted.");
-            console.log("Resetting to-do list render");
             ProjectList.projects[arrayIndex].clearToDos();
             ProjectList.projects[arrayIndex].renderToDoList();
         }
@@ -168,7 +166,12 @@ class Project {
         this.clearToDoRenders();
         this.toDos.forEach((element) => element.renderToDo())
         ProjectList.lastActiveProject = this.arrayIndex;
-        console.log("Last active project was at index " + ProjectList.lastActiveProject)
+
+        const addToDoButton = document.createElement("div");
+        addToDoButton.classList.add("add-to-do-button");
+        addToDoButton.addEventListener("click", () => ProjectList.projects[ProjectList.lastActiveProject].addToDo())
+        addToDoButton.innerHTML = addToDoTemplate;
+        toDosNode.appendChild(addToDoButton);
     }
 
     clearToDoRenders() {
@@ -216,5 +219,6 @@ const toDosNode = document.querySelector("#to-dos");
 import projectTemplate from "./templates/project.html";
 import toDoTemplate from "./templates/to-do.html";
 import addProjectTemplate from "./templates/add-project.html"
+import addToDoTemplate from "./templates/add-to-do.html"
 
 ProjectList.initializeProjectList();
