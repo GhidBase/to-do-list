@@ -1,11 +1,7 @@
 BIG PLAN
 
-Use Class Syntax
-Separate dom modification from logic
-Use composition instead of inheritance
-Use WebPack
 Use Date-FNs (node module)
     Use this to format and manipulate dates and times
-Use local storage to save their to-do lists
 Apply SOLID concepts
 
+Connect buttons to logic

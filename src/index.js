@@ -20,9 +20,9 @@ class ProjectList {
         console.log("\ninitializing project list object")
         if (ProjectList.getLocalStorage()) {
             this.projects = JSON.parse(this.localProjectList);
-            this.projects = this.projects.map((element) => {
+            this.projects = this.projects.map((element, index) => {
                 console.log(element);
-                let project = new Project(element.title, element.description, element.priority, element.toDos);
+                let project = new Project(element.title, element.description, element.priority, element.toDos, index);
                 return project;
             })
         ProjectList.renderProjectList();
@@ -35,7 +35,8 @@ class ProjectList {
     
     static addProject(title, description, priority) {
         const newProject = new Project(title, description, priority);
-        this.projects.push(newProject);
+        const newProjectIndex = this.projects.push(newProject) - 1;
+        newProject.setArrayIndex(newProjectIndex);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
         return newProject;
@@ -73,12 +74,17 @@ class ProjectList {
 }
 
 class Project {
-    constructor(title, description, priority, toDos = []) {
+    constructor(title, description, priority, toDos = [], arrayIndex) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.toDos = toDos;
+        this.arrayIndex = arrayIndex;
         this.initializeToDoList();
+    }
+
+    setArrayIndex(value) {
+        this.arrayIndex = value;
     }
 
     updateDetails(title, description, priority) {
@@ -92,7 +98,8 @@ class Project {
     }
 
     addToDo(title, description, priority) {
-        let newToDo = new ToDo(title, description, priority);
+        console.log("addToDo arrayIndex = " + this.arrayIndex)
+        let newToDo = new ToDo(title, description, priority, this.arrayIndex);
         this.toDos.push(newToDo);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
@@ -105,6 +112,7 @@ class Project {
     }
 
     removeToDo(toDoToRemove) {
+        console.log("Removing " + toDoToRemove)
         this.toDos = this.toDos.filter((element) => element != toDoToRemove);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
@@ -117,7 +125,7 @@ class Project {
 
     initializeToDoList() {
         this.toDos = this.toDos.map((element) => {
-            return new ToDo(element.title, element.description, element.priority);
+            return new ToDo(element.title, element.description, element.priority, this.arrayIndex);
         })
     }
 
@@ -146,10 +154,11 @@ class Project {
 }
 
 class ToDo {
-    constructor(title, description, priority) {
+    constructor(title, description, priority, projectIndex) {
         this.title = title,
         this.description = description,
-        this.priority = priority
+        this.priority = priority,
+        this.projectIndex = projectIndex
     }
 
     updateDetails(title, description, priority) {
@@ -159,12 +168,14 @@ class ToDo {
     }
 
     renderToDo() {
+        console.log("ProjectIndex = " + this.projectIndex)
         const tempContainer = document.createElement("div");
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
 
+        tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.projects[this.projectIndex].removeToDo(this));
         toDosNode.appendChild(tempContainer);
     }
 }
