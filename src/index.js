@@ -2,6 +2,7 @@ class ProjectList {
         static projects = [];
         static localProjectList;
         static defaultProjectToLoad = 0;
+        static lastActiveProject = 0;
 
     static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
@@ -41,6 +42,9 @@ class ProjectList {
     }
 
     static removeProject(projectToRemove) {
+        if (projectToRemove = ProjectList.lastActiveProject) {
+            projectToRemove.clearToDoRenders()
+        }
         this.projects = this.projects.filter((project) => project != projectToRemove);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
@@ -91,16 +95,19 @@ class Project {
         let newToDo = new ToDo(title, description, priority);
         this.toDos.push(newToDo);
         ProjectList.saveToLocalStorage();
+        this.renderToDoList();
     }
 
     editToDo(toDoToEdit, title, description, priority) {
         toDoToEdit.updateDetails(title, description, priority);
         ProjectList.saveToLocalStorage();
+        this.renderToDoList();
     }
 
     removeToDo(toDoToRemove) {
         this.toDos = this.toDos.filter((element) => element != toDoToRemove);
         ProjectList.saveToLocalStorage();
+        this.renderToDoList();
     }
 
     clearToDos() {
@@ -125,11 +132,16 @@ class Project {
     }
 
     renderToDoList() {
+        this.clearToDoRenders();
+        this.toDos.forEach((element) => element.renderToDo())
+        ProjectList.lastActiveProject = this;
+    }
+
+    clearToDoRenders() {
         toDosNode.innerHTML = "";
         const toDosHeader = document.createElement("h1");
         toDosHeader.textContent = "To-Dos";
         toDosNode.appendChild(toDosHeader);
-        this.toDos.forEach((element) => element.renderToDo())
     }
 }
 
