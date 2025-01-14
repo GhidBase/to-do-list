@@ -1,9 +1,7 @@
 class ProjectList {
         static projects = [];
         static localProjectList;
-        // static {
-        //     ProjectList.initializeProjectList();
-        // }
+        static defaultProjectToLoad = 0;
 
     static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
@@ -27,6 +25,7 @@ class ProjectList {
                 return project;
             })
         ProjectList.renderProjectList();
+        ProjectList.projects[ProjectList.defaultProjectToLoad].renderToDoList();
         }
         else {
             ProjectList.saveToLocalStorage();
@@ -61,12 +60,11 @@ class ProjectList {
     }
 
     static renderProjectList() {
-        console.log("Removing projects from list parent (not implemented yet)")
         projectsNode.innerHTML = "";
         const projectsHeader = document.createElement("h1");
         projectsHeader.textContent = "Projects";
         projectsNode.appendChild(projectsHeader);
-        this.projects.forEach((project) => {project.renderProject(project.title, project.description, project.priority)})
+        this.projects.forEach((project) => {project.renderProject()});
     }
 }
 
@@ -116,14 +114,18 @@ class Project {
         })
     }
 
-    renderProject(title, description, priority) {
+    renderProject() {
         const tempContainer = document.createElement("div");
         tempContainer.innerHTML = projectTemplate;
-        tempContainer.querySelector("h2").textContent = title;
-        tempContainer.querySelector(".description").textContent = description;
-        tempContainer.querySelector(".priority").textContent = priority;
+        tempContainer.querySelector("h2").textContent = this.title;
+        tempContainer.querySelector(".description").textContent = this.description;
+        tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
 
         projectsNode.appendChild(tempContainer);
+    }
+
+    renderToDoList() {
+        this.toDos.forEach((element) => element.renderToDo())
     }
 }
 
@@ -139,6 +141,16 @@ class ToDo {
         this.description = description;
         this.priority = priority;
     }
+
+    renderToDo() {
+        const tempContainer = document.createElement("div");
+        tempContainer.innerHTML = toDoTemplate;
+        tempContainer.querySelector("h2").textContent = this.title;
+        tempContainer.querySelector(".description").textContent = this.description;
+        tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
+
+        toDosNode.appendChild(tempContainer);
+    }
 }
 
 window.ProjectList = ProjectList;
@@ -148,7 +160,9 @@ window.ProjectList = ProjectList;
 import "./css/styles.css";
 
 const projectsNode = document.querySelector("#projects");
+const toDosNode = document.querySelector("#to-dos");
 import projectTemplate from "./templates/project.html";
+import toDoTemplate from "./templates/to-do.html";
 
 
 ProjectList.initializeProjectList();

@@ -46,3 +46,12 @@ that appends them back. If the element
 was already created we can reuse it,
 if it doesn't have an assigned element we
 can create one then append it
+
+static renderProjectList() {
+        console.log("Removing projects from list parent (not implemented yet)")
+        projectsNode.innerHTML = "";
+        const projectsHeader = document.createElement("h1");
+        projectsHeader.textContent = "Projects";
+        projectsNode.appendChild(projectsHeader);
+        this.projects.forEach((project) => {project.renderProject(project.title, project.description, project.priority)});
+    }
