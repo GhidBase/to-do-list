@@ -52,8 +52,16 @@ body {
     grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr;
     gap: var(--general-spacing);
-    padding: var(--general-spacing);
+    /* padding: var(--general-spacing); */
     box-sizing: border-box;
+}
+
+#to-dos {
+    padding-right: var(--general-spacing);
+}
+
+#projects {
+    padding-left: var(--general-spacing);
 }
 
 #projects,
@@ -65,6 +73,9 @@ body {
 
     display: flex;
     flex-direction: column;
+
+    overflow: auto;
+    scrollbar-color: var(--surface) transparent;
 }
 
 #projects h1,
