@@ -125,6 +125,10 @@ class Project {
     }
 
     renderToDoList() {
+        toDosNode.innerHTML = "";
+        const toDosHeader = document.createElement("h1");
+        toDosHeader.textContent = "To-Dos";
+        toDosNode.appendChild(toDosHeader);
         this.toDos.forEach((element) => element.renderToDo())
     }
 }

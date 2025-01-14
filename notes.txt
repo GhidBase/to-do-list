@@ -1,22 +1,3 @@
-Plan
-
-Build a to-do list app without a ui at first
-
-After building the app in the command line, build the ui
-
-We should have the following classes w/ the following properties
-    - ProjectList
-    - Project
-        - title
-        - description
-        - priority
-    - ToDo
-        - title
-        - description
-        - priority
-
-
-
 BIG PLAN
 
 Use Class Syntax
@@ -28,30 +9,3 @@ Use Date-FNs (node module)
 Use local storage to save their to-do lists
 Apply SOLID concepts
 
-
-
-
-Current actual steps
-Finish adding functionality then do DOM
-Add To-Do functionality
-Project:
-
-
-Once I finish functionality:
-Add steps to
-renderProjectList() that remove the divs
-inside of the projectList parent, and
-add functionality to Project.render()
-that appends them back. If the element
-was already created we can reuse it,
-if it doesn't have an assigned element we
-can create one then append it
-
-static renderProjectList() {
-        console.log("Removing projects from list parent (not implemented yet)")
-        projectsNode.innerHTML = "";
-        const projectsHeader = document.createElement("h1");
-        projectsHeader.textContent = "Projects";
-        projectsNode.appendChild(projectsHeader);
-        this.projects.forEach((project) => {project.renderProject(project.title, project.description, project.priority)});
-    }
