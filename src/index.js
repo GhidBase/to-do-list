@@ -26,6 +26,7 @@ class ProjectList {
                 let project = new Project(element.title, element.description, element.priority, element.toDos);
                 return project;
             })
+        ProjectList.renderProjectList();
         }
         else {
             ProjectList.saveToLocalStorage();
@@ -36,17 +37,20 @@ class ProjectList {
         const newProject = new Project(title, description, priority);
         this.projects.push(newProject);
         ProjectList.saveToLocalStorage();
+        ProjectList.renderProjectList();
         return newProject;
     }
 
     static removeProject(projectToRemove) {
         this.projects = this.projects.filter((project) => project != projectToRemove);
         ProjectList.saveToLocalStorage();
+        ProjectList.renderProjectList();
     }
 
     static editProject(projectToEdit, title, description, priority) {
         projectToEdit.updateDetails(title, description, priority);
         ProjectList.saveToLocalStorage();
+        ProjectList.renderProjectList();
     }
 
     static clearProjects() {
@@ -58,7 +62,8 @@ class ProjectList {
 
     static renderProjectList() {
         console.log("Removing projects from list parent (not implemented yet)")
-        this.projects.forEach((project) => {project.render()})
+        projectsNode.innerHTML = "";
+        this.projects.forEach((project) => {project.renderProject(project.title, project.description, project.priority)})
     }
 }
 
@@ -108,9 +113,12 @@ class Project {
         })
     }
 
-    renderProject() {
+    renderProject(title, description, priority) {
         const tempContainer = document.createElement("div");
         tempContainer.innerHTML = projectTemplate;
+        tempContainer.querySelector("h2").textContent = title;
+        tempContainer.querySelector(".description").textContent = description;
+        tempContainer.querySelector(".priority").textContent = priority;
 
         projectsNode.appendChild(tempContainer);
     }
@@ -132,11 +140,12 @@ class ToDo {
 
 window.ProjectList = ProjectList;
 
-ProjectList.initializeProjectList();
+
 
 import "./css/styles.css";
 
 const projectsNode = document.querySelector("#projects");
 import projectTemplate from "./templates/project.html";
 
-ProjectList.projects[0].renderProject();
+
+ProjectList.initializeProjectList();
