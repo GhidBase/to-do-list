@@ -231,3 +231,9 @@ h2 {
     padding: .25em .75em;
     border-radius: .25em;
 }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
