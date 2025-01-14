@@ -11,15 +11,20 @@ class ProjectList {
     }
 
     static form = ProjectList.projectEditPanel.querySelector(".edit-panel-actual");
-    static {
-        ProjectList.form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            ProjectList.closeProjectEditPanel();
-        })
-    }
     static formTitle = ProjectList.form.querySelector(".title");
     static formDescription = ProjectList.form.querySelector(".description");
     static formPriority = ProjectList.form.querySelector(".priority");
+    static {
+        ProjectList.form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            ProjectList.addProject(ProjectList.formTitle.value, ProjectList.formDescription.value, ProjectList.formPriority.value);
+            ProjectList.formTitle.value = "";
+            ProjectList.formDescription.value = "";
+            ProjectList.formPriority.value = "";
+            ProjectList.closeProjectEditPanel();
+        })
+    }
+    
         
 
     static getLocalStorage() {
