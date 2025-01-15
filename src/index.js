@@ -3,6 +3,7 @@ class ProjectList {
     static localProjectList;
     static defaultProjectToLoad = 0;
     static lastActiveProject = 0;
+    static lastEditedToDo;
     
     
     //#region PROJECT ADD PANEL START
@@ -86,10 +87,16 @@ class ProjectList {
     static {
         ProjectList.toDoEditForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            ProjectList.projects[ProjectList.lastActiveProject].addToDo(ProjectList.toDoFormTitle.value, ProjectList.toDoDescription.value, ProjectList.toDoPriority.value, ProjectList.projects[ProjectList.lastActiveProject].toDos.length);
-            ProjectList.toDoFormTitle.value = "";
-            ProjectList.toDoDescription.value = "";
-            ProjectList.toDoPriority.value = "";
+            
+            ProjectList.projects[ProjectList.lastActiveProject].editToDo(
+                ProjectList.projects[ProjectList.lastActiveProject].toDos[ProjectList.lastEditedToDo],
+                ProjectList.toDoEditFormTitle.value,
+                ProjectList.toDoEditDescription.value,
+                ProjectList.toDoEditPriority.value,
+                ProjectList.projects[ProjectList.lastActiveProject].toDos.length);
+            ProjectList.toDoEditFormTitle.value = "";
+            ProjectList.toDoEditDescription.value = "";
+            ProjectList.toDoEditPriority.value = "";
             ProjectList.closeToDoEditPanel();
             ProjectList.toDoEditHeader.textContent = "Edit To-Do: " + this.toDoEditFormTitle;
         })
@@ -206,6 +213,7 @@ class ProjectList {
         console.log("EDIT: " + referenceToDo.title)
         ProjectList.toDoEditPanel.querySelector(".description").textContent = referenceToDo.description;
         ProjectList.toDoEditPanel.querySelector(".priority").value = Number(referenceToDo.priority);
+        ProjectList.lastEditedToDo = indexOfToDo;
     }
 
     static closeToDoEditPanel() {
@@ -244,9 +252,11 @@ class Project {
     }
 
     editToDo(toDoToEdit, title, description, priority) {
+        console.log(toDoToEdit)
         toDoToEdit.updateDetails(title, description, priority);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
+        // ProjectList.closeToDoEditPanel();
     }
 
     removeToDo(toDoToRemove) {
