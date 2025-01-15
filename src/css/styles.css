@@ -35,7 +35,9 @@
     font-family: 'roboto';
 }
 
-
+textarea {
+    resize: none;
+}
 
 
 /*
