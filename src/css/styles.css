@@ -110,6 +110,8 @@ body {
     justify-content: flex-end;
     align-items: center;
     gap: calc(var(--general-spacing)/4);
+    flex-wrap: wrap;
+    font-size: calc(clamp(.8em, calc(10dvw/10), 1em));
 }
 
 .buttons .buttons-inner {
@@ -118,21 +120,38 @@ body {
     flex-wrap: wrap;
 }
 
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.margin-spacer {
+    margin-right: auto;
+}
+
+.checkbox-gap {
+    margin-right: 10px;
+}
+
 .project #edit {
     background-color: var(--primary);
     border: 0;
     color: var(--on-primary);
     font-weight: 600;
-    font-size: 1em;
+    /* font-size: 1em; */
     padding: calc(var(--general-spacing)/8) calc(var(--general-spacing)/4) calc(var(--general-spacing)/8) calc(var(--general-spacing)/1.5);
     margin: 0;
     border-radius: calc(var(--general-spacing)/2);
 
     display: flex;
     align-items: center;
-    min-width: 145px;
+    max-width: 145px;
     box-sizing: content-box;
     margin-top: calc(var(--general-spacing)/4);
+    word-wrap: break-word;
 }
 
 .project button {

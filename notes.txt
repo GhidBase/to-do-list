@@ -6,3 +6,4 @@ Apply SOLID concepts
 
 Connect buttons to logic
 
+Change priority to high medium low
