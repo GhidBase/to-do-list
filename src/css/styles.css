@@ -280,6 +280,10 @@ input.checkbox-gap {
     font-size: 1.2em;
   }
 
+  .to-do .checkbox {
+    margin-right: auto;
+  }
+
 .edit-panel textarea{
     width: 100%;
     height: 100%;

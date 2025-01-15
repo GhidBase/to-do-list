@@ -187,7 +187,7 @@ class Project {
 
     addToDo(title, description, priority) {
         console.log("addToDo arrayIndex = " + this.arrayIndex)
-        let newToDo = new ToDo(title, description, priority, this.arrayIndex);
+        let newToDo = new ToDo(title, description, priority, this.arrayIndex, element.completion);
         this.toDos.push(newToDo);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
@@ -213,7 +213,7 @@ class Project {
 
     initializeToDoList() {
         this.toDos = this.toDos.map((element) => {
-            return new ToDo(element.title, element.description, element.priority, this.arrayIndex);
+            return new ToDo(element.title, element.description, element.priority, this.arrayIndex, element.completion);
         })
     }
 
@@ -278,11 +278,13 @@ class Project {
 }
 
 class ToDo {
-    constructor(title, description, priority, projectIndex) {
+    constructor(title, description, priority, projectIndex, completion) {
         this.title = title,
         this.description = description,
         this.priority = priority,
-        this.projectIndex = projectIndex
+        this.projectIndex = projectIndex,
+        this.completion = completion,
+        this.rootDomNode
     }
 
     updateDetails(title, description, priority) {
@@ -293,13 +295,39 @@ class ToDo {
 
     renderToDo() {
         const tempContainer = document.createElement("div");
+        this.rootDomNode = tempContainer;
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
+        tempContainer.querySelector(".checkbox-gap").checked = this.completion;
+        tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
 
         tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.projects[this.projectIndex].removeToDo(this));
         toDosNode.appendChild(tempContainer);
+
+        this.renderToDoCompletion()
+    }
+
+    toggleCompletion() {
+        if (this.completion == false || this.completion == null || this.completion == undefined) {
+            this.completion = true;
+        }
+        else {
+            this.completion = false;
+        }
+        this.renderToDoCompletion();
+        console.log("completion status now " + this.completion);
+        ProjectList.saveToLocalStorage();
+    }
+
+    renderToDoCompletion() {
+        if (this.completion == false || this.completion == null || this.completion == undefined) {
+            this.rootDomNode.querySelector("h2").textContent = this.title;
+        }
+        else {
+            this.rootDomNode.querySelector("h2").textContent = this.title + " (Completed)";
+        }
     }
 }
 
