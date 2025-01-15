@@ -5,7 +5,8 @@ class ProjectList {
     static lastActiveProject = 0;
     
     
-    // PROJECT EDIT PANEL START
+    //#region PROJECT EDIT PANEL START
+    // 
     static projectEditPanel = document.createElement("div");
     static {
         ProjectList.projectEditPanel.classList.add("edit-panel");
@@ -61,8 +62,8 @@ class ProjectList {
 
         ProjectList.toDoFormCancelButton.addEventListener("click",() => ProjectList.closeToDoEditPanel())   
     }
-    // ToDo EDIT PANEL END
-        
+    // 
+    //#endregion ToDo EDIT PANEL END
 
     static getLocalStorage() {
         this.localProjectList = localStorage.getItem("projects");
@@ -82,7 +83,7 @@ class ProjectList {
             this.projects = JSON.parse(this.localProjectList);
             this.projects = this.projects.map((element, index) => {
                 console.log(element);
-                let project = new Project(element.title, element.description, element.priority, element.toDos, index);
+                let project = new Project(element.title, element.description, element.priority, element.toDos, index, element.completion);
                 return project;
             })
         ProjectList.renderProjectList();
@@ -98,23 +99,13 @@ class ProjectList {
     }
     
     static addProject(title, description, priority) {
-        const newProject = new Project(title, description, priority);
+        const newProject = new Project(title, description, priority, [], ProjectList.projects.length, false);
         const newProjectIndex = this.projects.push(newProject) - 1;
         newProject.setArrayIndex(newProjectIndex);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
         return newProject;
     }
-
-    // static removeProject(projectToRemove) {
-    //     console.log("Removing project at index " + projectToRemove.arrayIndex)
-    //     if (projectToRemove = ProjectList.lastActiveProject) {
-    //         projectToRemove.clearToDoRenders()
-    //     }
-    //     this.projects = this.projects.filter((project) => project != projectToRemove);
-    //     ProjectList.saveToLocalStorage();
-    //     ProjectList.renderProjectList();
-    // }
 
     static removeProject(arrayIndex) {
         console.log("deleting item at index " + arrayIndex);
@@ -173,13 +164,15 @@ class ProjectList {
 }
 
 class Project {
-    constructor(title, description, priority, toDos = [], arrayIndex) {
+    constructor(title, description, priority, toDos = [], arrayIndex, completion) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.toDos = toDos;
         this.arrayIndex = arrayIndex;
+        this.completion = completion;
         this.initializeToDoList();
+        this.rootDomNode;
     }
 
     setArrayIndex(value) {
@@ -227,13 +220,18 @@ class Project {
     renderProject(index) {
         this.arrayIndex = index;
         const tempContainer = document.createElement("div");
+        this.rootDomNode = tempContainer;
         tempContainer.innerHTML = projectTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
+        tempContainer.querySelector(".checkbox-gap").checked = this.completion;
+        tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
         
         tempContainer.querySelector(".view-button").addEventListener("click", () => this.renderToDoList())
         tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.removeProject(this.arrayIndex))
+
+        this.renderProjectCompletion();
 
         projectsNode.appendChild(tempContainer);
     }
@@ -255,6 +253,27 @@ class Project {
         const toDosHeader = document.createElement("h1");
         toDosHeader.textContent = "To-Dos";
         toDosNode.appendChild(toDosHeader);
+    }
+
+    toggleCompletion() {
+        if (this.completion == false || this.completion == null || this.completion == undefined) {
+            this.completion = true;
+        }
+        else {
+            this.completion = false;
+        }
+        this.renderProjectCompletion();
+        console.log("completion status now " + this.completion);
+        ProjectList.saveToLocalStorage();
+    }
+
+    renderProjectCompletion() {
+        if (this.completion == false || this.completion == null || this.completion == undefined) {
+            this.rootDomNode.querySelector("h2").textContent = this.title;
+        }
+        else {
+            this.rootDomNode.querySelector("h2").textContent = this.title + " (Completed)";
+        }
     }
 }
 
