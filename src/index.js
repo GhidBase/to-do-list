@@ -5,15 +5,15 @@ class ProjectList {
     static lastActiveProject = 0;
     
     
-    //#region PROJECT EDIT PANEL START
+    //#region PROJECT ADD PANEL START
     // 
-    static projectEditPanel = document.createElement("div");
+    static projectAddPanel = document.createElement("div");
     static {
-        ProjectList.projectEditPanel.classList.add("edit-panel");
-        ProjectList.projectEditPanel.innerHTML = editPanelTemplate;
+        ProjectList.projectAddPanel.classList.add("edit-panel");
+        ProjectList.projectAddPanel.innerHTML = editPanelTemplate;
     }
 
-    static form = ProjectList.projectEditPanel.querySelector(".edit-panel-actual");
+    static form = ProjectList.projectAddPanel.querySelector(".edit-panel-actual");
     static formTitle = ProjectList.form.querySelector(".title");
     static formDescription = ProjectList.form.querySelector(".description");
     static formPriority = ProjectList.form.querySelector(".priority");
@@ -25,27 +25,27 @@ class ProjectList {
             ProjectList.formTitle.value = "";
             ProjectList.formDescription.value = "";
             ProjectList.formPriority.value = "";
-            ProjectList.closeProjectEditPanel();
+            ProjectList.closeProjectAddPanel();
         })
 
-        ProjectList.formCancelButton.addEventListener("click",() => ProjectList.closeProjectEditPanel())   
+        ProjectList.formCancelButton.addEventListener("click",() => ProjectList.closeProjectAddPanel())   
     }
-    // PROJECT EDIT PANEL END
+    // #endregion PROJECT EDIT PANEL END
+    
 
-
-    // ToDo EDIT PANEL START
-    static toDoEditPanel = document.createElement("div");
+    // #region TODO ADD PANEL START
+    static toDoAddPanel = document.createElement("div");
     static {
-        ProjectList.toDoEditPanel.classList.add("edit-panel");
-        ProjectList.toDoEditPanel.innerHTML = editPanelTemplate;   
+        ProjectList.toDoAddPanel.classList.add("edit-panel");
+        ProjectList.toDoAddPanel.innerHTML = editPanelTemplate;   
     }
 
-    static toDoEditHeader = ProjectList.toDoEditPanel.querySelector("h1");
+    static toDoAddHeader = ProjectList.toDoAddPanel.querySelector("h1");
     static {
-        ProjectList.toDoEditHeader.textContent = "New To-Do";
+        ProjectList.toDoAddHeader.textContent = "New To-Do";
     }
 
-    static toDoForm = ProjectList.toDoEditPanel.querySelector(".edit-panel-actual");
+    static toDoForm = ProjectList.toDoAddPanel.querySelector(".edit-panel-actual");
     static toDoFormTitle = ProjectList.toDoForm.querySelector(".title");
     static toDoDescription = ProjectList.toDoForm.querySelector(".description");
     static toDoPriority = ProjectList.toDoForm.querySelector(".priority");
@@ -57,10 +57,44 @@ class ProjectList {
             ProjectList.toDoFormTitle.value = "";
             ProjectList.toDoDescription.value = "";
             ProjectList.toDoPriority.value = "";
-            ProjectList.closeToDoEditPanel();
+            ProjectList.closeToDoAddPanel();
         })
 
-        ProjectList.toDoFormCancelButton.addEventListener("click",() => ProjectList.closeToDoEditPanel())   
+        console.log("TEST");
+        ProjectList.toDoFormCancelButton.addEventListener("click",() => ProjectList.closeToDoAddPanel())   
+        console.log("TEST");
+    }
+    // 
+    //#endregion ToDo EDIT PANEL END
+
+
+    // #region TODO Edit PANEL START
+    static toDoEditPanel = document.createElement("div");
+    static {
+        ProjectList.toDoEditPanel.classList.add("edit-panel");
+        ProjectList.toDoEditPanel.innerHTML = editPanelTemplate;   
+    }
+
+    static toDoEditHeader = ProjectList.toDoEditPanel.querySelector("h1");
+    
+
+    static toDoEditForm = ProjectList.toDoEditPanel.querySelector(".edit-panel-actual");
+    static toDoEditFormTitle = ProjectList.toDoEditForm.querySelector(".title");
+    static toDoEditDescription = ProjectList.toDoEditForm.querySelector(".description");
+    static toDoEditPriority = ProjectList.toDoEditForm.querySelector(".priority");
+    static toDoEditFormCancelButton = ProjectList.toDoEditForm.querySelector(".cancel-button");
+    static {
+        ProjectList.toDoEditForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            ProjectList.projects[ProjectList.lastActiveProject].addToDo(ProjectList.toDoFormTitle.value, ProjectList.toDoDescription.value, ProjectList.toDoPriority.value, ProjectList.projects[ProjectList.lastActiveProject].toDos.length);
+            ProjectList.toDoFormTitle.value = "";
+            ProjectList.toDoDescription.value = "";
+            ProjectList.toDoPriority.value = "";
+            ProjectList.closeToDoEditPanel();
+            ProjectList.toDoEditHeader.textContent = "Edit To-Do: " + this.toDoEditFormTitle;
+        })
+
+        ProjectList.toDoEditFormCancelButton.addEventListener("click",() => ProjectList.closeToDoEditPanel())   
     }
     // 
     //#endregion ToDo EDIT PANEL END
@@ -141,25 +175,41 @@ class ProjectList {
 
         const addProjectButton = document.createElement("div");
         addProjectButton.classList.add("add-project-button");
-        addProjectButton.addEventListener("click", () => ProjectList.showProjectEditPanel())
+        addProjectButton.addEventListener("click", () => ProjectList.showProjectAddPanel())
         addProjectButton.innerHTML = addProjectTemplate;
         projectsNode.appendChild(addProjectButton);
     }
 
-    static showProjectEditPanel() {
-        document.body.appendChild(ProjectList.projectEditPanel);
+    static showProjectAddPanel() {
+        document.body.appendChild(ProjectList.projectAddPanel);
     }
 
-    static closeProjectEditPanel() {
-        document.body.removeChild(ProjectList.projectEditPanel)
+    static closeProjectAddPanel() {
+        document.body.removeChild(ProjectList.projectAddPanel)
+    }
+
+    static closeToDoAddPanel() {
+        document.body.removeChild(ProjectList.toDoAddPanel)
+    }
+
+    static showToDoAddPanel() {
+        console.log("showAddPanel");
+        document.body.appendChild(ProjectList.toDoAddPanel);
+    }
+
+    static showToDoEditPanel(indexOfToDo) {
+        console.log("showEditPanel");
+        document.body.appendChild(ProjectList.toDoEditPanel);
+        let referenceToDo = ProjectList.projects[this.lastActiveProject].toDos[indexOfToDo];
+        ProjectList.toDoEditHeader.textContent = "Edit To-Do: ";
+        ProjectList.toDoEditPanel.querySelector(".title").value = referenceToDo.title;
+        console.log("EDIT: " + referenceToDo.title)
+        ProjectList.toDoEditPanel.querySelector(".description").textContent = referenceToDo.description;
+        ProjectList.toDoEditPanel.querySelector(".priority").value = Number(referenceToDo.priority);
     }
 
     static closeToDoEditPanel() {
         document.body.removeChild(ProjectList.toDoEditPanel)
-    }
-
-    static showToDoEditPanel() {
-        document.body.appendChild(ProjectList.toDoEditPanel);
     }
 }
 
@@ -187,7 +237,7 @@ class Project {
 
     addToDo(title, description, priority) {
         console.log("addToDo arrayIndex = " + this.arrayIndex)
-        let newToDo = new ToDo(title, description, priority, this.arrayIndex, element.completion);
+        let newToDo = new ToDo(title, description, priority, this.arrayIndex, false, this.toDos.length);
         this.toDos.push(newToDo);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
@@ -238,12 +288,12 @@ class Project {
 
     renderToDoList() {
         this.clearToDoRenders();
-        this.toDos.forEach((element) => element.renderToDo())
+        this.toDos.forEach((element, index) => element.renderToDo(index))
         ProjectList.lastActiveProject = this.arrayIndex;
 
         const addToDoButton = document.createElement("div");
         addToDoButton.classList.add("add-to-do-button");
-        addToDoButton.addEventListener("click", () => ProjectList.showToDoEditPanel())
+        addToDoButton.addEventListener("click", () => ProjectList.showToDoAddPanel())
         addToDoButton.innerHTML = addToDoTemplate;
         toDosNode.appendChild(addToDoButton);
     }
@@ -278,13 +328,14 @@ class Project {
 }
 
 class ToDo {
-    constructor(title, description, priority, projectIndex, completion) {
+    constructor(title, description, priority, projectIndex, completion, index) {
         this.title = title,
         this.description = description,
         this.priority = priority,
         this.projectIndex = projectIndex,
         this.completion = completion,
-        this.rootDomNode
+        this.rootDomNode,
+        this.index = index
     }
 
     updateDetails(title, description, priority) {
@@ -293,8 +344,9 @@ class ToDo {
         this.priority = priority;
     }
 
-    renderToDo() {
+    renderToDo(index) {
         const tempContainer = document.createElement("div");
+        this.index = index;
         this.rootDomNode = tempContainer;
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
@@ -302,6 +354,9 @@ class ToDo {
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
+        tempContainer.querySelector(".edit-button").addEventListener("click", () => {
+            ProjectList.showToDoEditPanel(index);
+        });
 
         tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.projects[this.projectIndex].removeToDo(this));
         toDosNode.appendChild(tempContainer);
