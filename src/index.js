@@ -4,6 +4,7 @@ class ProjectList {
     static defaultProjectToLoad = 0;
     static lastActiveProject = 0;
     static lastEditedToDo;
+    static lastEditedProject;
     
     
     //#region PROJECT ADD PANEL START
@@ -30,6 +31,35 @@ class ProjectList {
         })
 
         ProjectList.formCancelButton.addEventListener("click",() => ProjectList.closeProjectAddPanel())   
+    }
+    // #endregion PROJECT ADD PANEL END
+
+
+    //#region PROJECT EDIT PANEL START
+    // 
+    static projectEditPanel = document.createElement("div");
+    static {
+        ProjectList.projectEditPanel.classList.add("edit-panel");
+        ProjectList.projectEditPanel.innerHTML = editPanelTemplate;
+    }
+
+    static editProjectForm = ProjectList.projectEditPanel.querySelector(".edit-panel-actual");
+    static editProjectFormTitle = ProjectList.editProjectForm.querySelector(".title");
+    static editProjectFormHeader = ProjectList.editProjectForm.querySelector("h2");
+    static editProjectFormDescription = ProjectList.editProjectForm.querySelector(".description");
+    static editProjectFormPriority = ProjectList.editProjectForm.querySelector(".priority");
+    static editProjectFormCancelButton = ProjectList.editProjectForm.querySelector(".cancel-button");
+    static {
+        ProjectList.editProjectForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            ProjectList.editProject(ProjectList.projects[ProjectList.lastEditedProject], ProjectList.editProjectFormTitle.value, ProjectList.editProjectFormDescription.value, ProjectList.editProjectFormPriority.value);
+            ProjectList.editProjectFormTitle.value = "";
+            ProjectList.editProjectFormDescription.value = "";
+            ProjectList.editProjectFormPriority.value = "";
+            ProjectList.closeProjectEditPanel();
+        })
+
+        ProjectList.editProjectFormCancelButton.addEventListener("click",() => ProjectList.closeProjectEditPanel())   
     }
     // #endregion PROJECT EDIT PANEL END
     
@@ -191,8 +221,25 @@ class ProjectList {
         document.body.appendChild(ProjectList.projectAddPanel);
     }
 
+    static showProjectEditPanel(index) {
+        console.log("Editing project");
+        document.body.appendChild(ProjectList.projectEditPanel);
+        ProjectList.lastEditedProject = index;
+
+        let referenceProject = ProjectList.projects[index];
+        ProjectList.projectEditPanel.querySelector("h1").textContent = "Edit Project: ";
+        ProjectList.projectEditPanel.querySelector(".title").value = referenceProject.title;
+        console.log("EDIT: " + referenceProject.title)
+        ProjectList.projectEditPanel.querySelector(".description").textContent = referenceProject.description;
+        ProjectList.projectEditPanel.querySelector(".priority").value = Number(referenceProject.priority);
+    }
+
     static closeProjectAddPanel() {
         document.body.removeChild(ProjectList.projectAddPanel)
+    }
+
+    static closeProjectEditPanel() {
+        document.body.removeChild(ProjectList.projectEditPanel)
     }
 
     static closeToDoAddPanel() {
@@ -286,7 +333,11 @@ class Project {
         tempContainer.querySelector(".description").textContent = this.description;
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
-        tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
+        tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion());
+        tempContainer.querySelector(".edit-button").addEventListener("click", () => {
+            console.log("EDITING");
+            ProjectList.showProjectEditPanel(index);
+        });
         
         tempContainer.querySelector(".view-button").addEventListener("click", () => this.renderToDoList())
         tempContainer.querySelector(".delete-button").addEventListener("click", () => ProjectList.removeProject(this.arrayIndex))
