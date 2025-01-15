@@ -222,15 +222,13 @@ class ProjectList {
     }
 
     static showProjectEditPanel(index) {
-        console.log("Editing project");
         document.body.appendChild(ProjectList.projectEditPanel);
         ProjectList.lastEditedProject = index;
 
         let referenceProject = ProjectList.projects[index];
         ProjectList.projectEditPanel.querySelector("h1").textContent = "Edit Project: ";
         ProjectList.projectEditPanel.querySelector(".title").value = referenceProject.title;
-        console.log("EDIT: " + referenceProject.title)
-        ProjectList.projectEditPanel.querySelector(".description").textContent = referenceProject.description;
+        ProjectList.projectEditPanel.querySelector(".description").value = referenceProject.description;
         ProjectList.projectEditPanel.querySelector(".priority").value = Number(referenceProject.priority);
     }
 
@@ -258,7 +256,7 @@ class ProjectList {
         ProjectList.toDoEditHeader.textContent = "Edit To-Do: ";
         ProjectList.toDoEditPanel.querySelector(".title").value = referenceToDo.title;
         console.log("EDIT: " + referenceToDo.title)
-        ProjectList.toDoEditPanel.querySelector(".description").textContent = referenceToDo.description;
+        ProjectList.toDoEditPanel.querySelector(".description").value = referenceToDo.description;
         ProjectList.toDoEditPanel.querySelector(".priority").value = Number(referenceToDo.priority);
         ProjectList.lastEditedToDo = indexOfToDo;
     }
@@ -335,7 +333,7 @@ class Project {
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion());
         tempContainer.querySelector(".edit-button").addEventListener("click", () => {
-            console.log("EDITING");
+            console.log("EDITING " + index);
             ProjectList.showProjectEditPanel(index);
         });
         
