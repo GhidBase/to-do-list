@@ -1,3 +1,5 @@
+import { format, formatDistance, formatRelative, subDays, parseISO } from 'date-fns';
+
 class ProjectList {
     static projects = [];
     static localProjectList;
@@ -5,6 +7,7 @@ class ProjectList {
     static lastActiveProject = 0;
     static lastEditedToDo;
     static lastEditedProject;
+    
     
     
     //#region PROJECT ADD PANEL START
@@ -19,11 +22,12 @@ class ProjectList {
     static formTitle = ProjectList.form.querySelector(".title");
     static formDescription = ProjectList.form.querySelector(".description");
     static formPriority = ProjectList.form.querySelector(".priority");
+    static formDate = ProjectList.form.querySelector(".date");
     static formCancelButton = ProjectList.form.querySelector(".cancel-button");
     static {
         ProjectList.form.addEventListener('submit', function(event) {
             event.preventDefault();
-            ProjectList.addProject(ProjectList.formTitle.value, ProjectList.formDescription.value, ProjectList.formPriority.value);
+            ProjectList.addProject(ProjectList.formTitle.value, ProjectList.formDescription.value, ProjectList.formPriority.value, ProjectList.formDate.value);
             ProjectList.formTitle.value = "";
             ProjectList.formDescription.value = "";
             ProjectList.formPriority.value = "";
@@ -49,13 +53,15 @@ class ProjectList {
     static editProjectFormDescription = ProjectList.editProjectForm.querySelector(".description");
     static editProjectFormPriority = ProjectList.editProjectForm.querySelector(".priority");
     static editProjectFormCancelButton = ProjectList.editProjectForm.querySelector(".cancel-button");
+    static editProjectFormDate = ProjectList.editProjectForm.querySelector(".date");
     static {
         ProjectList.editProjectForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            ProjectList.editProject(ProjectList.projects[ProjectList.lastEditedProject], ProjectList.editProjectFormTitle.value, ProjectList.editProjectFormDescription.value, ProjectList.editProjectFormPriority.value);
+            ProjectList.editProject(ProjectList.projects[ProjectList.lastEditedProject], ProjectList.editProjectFormTitle.value, ProjectList.editProjectFormDescription.value, ProjectList.editProjectFormPriority.value, ProjectList.editProjectFormDate.value);
             ProjectList.editProjectFormTitle.value = "";
             ProjectList.editProjectFormDescription.value = "";
             ProjectList.editProjectFormPriority.value = "";
+            ProjectList.editProjectFormDate.value = "";
             ProjectList.closeProjectEditPanel();
         })
 
@@ -154,7 +160,7 @@ class ProjectList {
             this.projects = JSON.parse(this.localProjectList);
             this.projects = this.projects.map((element, index) => {
                 console.log(element);
-                let project = new Project(element.title, element.description, element.priority, element.toDos, index, element.completion);
+                let project = new Project(element.title, element.description, element.priority, element.toDos, index, element.completion, element.date);
                 return project;
             })
         ProjectList.renderProjectList();
@@ -166,8 +172,8 @@ class ProjectList {
         }
     }
     
-    static addProject(title, description, priority) {
-        const newProject = new Project(title, description, priority, [], ProjectList.projects.length, false);
+    static addProject(title, description, priority, date) {
+        const newProject = new Project(title, description, priority, [], ProjectList.projects.length, false, date);
         const newProjectIndex = this.projects.push(newProject) - 1;
         newProject.setArrayIndex(newProjectIndex);
         ProjectList.saveToLocalStorage();
@@ -180,6 +186,10 @@ class ProjectList {
         if (ProjectList.lastActiveProject == arrayIndex) {
             ProjectList.projects[arrayIndex].clearToDos();
             ProjectList.projects[arrayIndex].renderToDoList();
+            toDosNode.innerHTML = "";
+            const toDosHeader = document.createElement("h1");
+            toDosHeader.textContent = "To-Dos";
+            toDosNode.appendChild(toDosHeader);
         }
 
         ProjectList.projects = ProjectList.projects.filter((project) => ProjectList.projects[arrayIndex] != project);
@@ -194,8 +204,8 @@ class ProjectList {
         }
     }
 
-    static editProject(projectToEdit, title, description, priority) {
-        projectToEdit.updateDetails(title, description, priority);
+    static editProject(projectToEdit, title, description, priority, date) {
+        projectToEdit.updateDetails(title, description, priority, date);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
     }
@@ -234,6 +244,9 @@ class ProjectList {
         ProjectList.projectEditPanel.querySelector(".title").value = referenceProject.title;
         ProjectList.projectEditPanel.querySelector(".description").value = referenceProject.description;
         ProjectList.projectEditPanel.querySelector(".priority").value = Number(referenceProject.priority);
+        ProjectList.projectEditPanel.querySelector(".date").value = format(parseISO(referenceProject.date), "yyyy-MM-dd");
+        console.log(referenceProject.date);
+        console.log(format(parseISO(referenceProject.date), "yyyy-MM-dd"));
     }
 
     static closeProjectAddPanel() {
@@ -271,7 +284,7 @@ class ProjectList {
 }
 
 class Project {
-    constructor(title, description, priority, toDos = [], arrayIndex, completion) {
+    constructor(title, description, priority, toDos = [], arrayIndex, completion, date) {
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -280,16 +293,18 @@ class Project {
         this.completion = completion;
         this.initializeToDoList();
         this.rootDomNode;
+        this.date = date != null ? date : null;
     }
 
     setArrayIndex(value) {
         this.arrayIndex = value;
     }
 
-    updateDetails(title, description, priority) {
+    updateDetails(title, description, priority, date) {
         this.title = title;
         this.description = description;
         this.priority = priority;
+        this.date = date;
     }
 
     addToDo(title, description, priority) {
@@ -337,7 +352,6 @@ class Project {
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion());
         tempContainer.querySelector(".edit-button").addEventListener("click", () => {
-            console.log("EDITING " + index);
             ProjectList.showProjectEditPanel(index);
         });
         
@@ -367,7 +381,7 @@ class Project {
     clearToDoRenders() {
         toDosNode.innerHTML = "";
         const toDosHeader = document.createElement("h1");
-        toDosHeader.textContent = "To-Dos";
+        toDosHeader.textContent = "To-Dos - " + ProjectList.projects[ProjectList.lastActiveProject].title;
         toDosNode.appendChild(toDosHeader);
     }
 
