@@ -170,6 +170,7 @@ class ProjectList {
         }
         else {
             ProjectList.saveToLocalStorage();
+            ProjectList.initializeProjectList();
         }
     }
     
