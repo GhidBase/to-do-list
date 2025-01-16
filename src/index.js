@@ -158,10 +158,7 @@ class ProjectList {
                 return project;
             })
         ProjectList.renderProjectList();
-        if (ProjectList.projects[0] == undefined) {
-            ProjectList.addProject("Default project", "", 5);
-        }
-        ProjectList.projects[ProjectList.defaultProjectToLoad].renderToDoList();
+        
         
         }
         else {
@@ -188,6 +185,13 @@ class ProjectList {
         ProjectList.projects = ProjectList.projects.filter((project) => ProjectList.projects[arrayIndex] != project);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
+
+        if (ProjectList.projects.length == 0) {
+            toDosNode.innerHTML = "";
+            const toDosHeader = document.createElement("h1");
+            toDosHeader.textContent = "To-Dos";
+            toDosNode.appendChild(toDosHeader);
+        }
     }
 
     static editProject(projectToEdit, title, description, priority) {
@@ -349,6 +353,9 @@ class Project {
         this.clearToDoRenders();
         this.toDos.forEach((element, index) => element.renderToDo(index))
         ProjectList.lastActiveProject = this.arrayIndex;
+
+        if (ProjectList.projects.length == 0)
+            return;
 
         const addToDoButton = document.createElement("div");
         addToDoButton.classList.add("add-to-do-button");
