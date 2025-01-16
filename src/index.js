@@ -57,7 +57,7 @@ class ProjectList {
     static {
         ProjectList.editProjectForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            ProjectList.editProject(ProjectList.projects[ProjectList.lastEditedProject], ProjectList.editProjectFormTitle.value, ProjectList.editProjectFormDescription.value, ProjectList.editProjectFormPriority.value, ProjectList.editProjectFormDate.value);
+            ProjectList.editProject(ProjectList.projects[ProjectList.lastEditedProject], ProjectList.editProjectFormTitle.value, ProjectList.editProjectFormDescription.value, ProjectList.editProjectFormPriority.value, parseISO(ProjectList.editProjectFormDate.value));
             ProjectList.editProjectFormTitle.value = "";
             ProjectList.editProjectFormDescription.value = "";
             ProjectList.editProjectFormPriority.value = "";
@@ -86,20 +86,20 @@ class ProjectList {
     static toDoFormTitle = ProjectList.toDoForm.querySelector(".title");
     static toDoDescription = ProjectList.toDoForm.querySelector(".description");
     static toDoPriority = ProjectList.toDoForm.querySelector(".priority");
+    static toDoDate = ProjectList.toDoForm.querySelector(".date");
     static toDoFormCancelButton = ProjectList.toDoForm.querySelector(".cancel-button");
     static {
         ProjectList.toDoForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            ProjectList.projects[ProjectList.lastActiveProject].addToDo(ProjectList.toDoFormTitle.value, ProjectList.toDoDescription.value, ProjectList.toDoPriority.value);
+            ProjectList.projects[ProjectList.lastActiveProject].addToDo(ProjectList.toDoFormTitle.value, ProjectList.toDoDescription.value, ProjectList.toDoPriority.value, ProjectList.toDoDate.value);
             ProjectList.toDoFormTitle.value = "";
             ProjectList.toDoDescription.value = "";
             ProjectList.toDoPriority.value = "";
             ProjectList.closeToDoAddPanel();
         })
 
-        console.log("TEST");
-        ProjectList.toDoFormCancelButton.addEventListener("click",() => ProjectList.closeToDoAddPanel())   
-        console.log("TEST");
+        ProjectList.toDoFormCancelButton.addEventListener("click",() => ProjectList.closeToDoAddPanel())
+        
     }
     // 
     //#endregion ToDo EDIT PANEL END
@@ -119,6 +119,7 @@ class ProjectList {
     static toDoEditFormTitle = ProjectList.toDoEditForm.querySelector(".title");
     static toDoEditDescription = ProjectList.toDoEditForm.querySelector(".description");
     static toDoEditPriority = ProjectList.toDoEditForm.querySelector(".priority");
+    static toDoEditDate = ProjectList.toDoEditForm.querySelector(".date");
     static toDoEditFormCancelButton = ProjectList.toDoEditForm.querySelector(".cancel-button");
     static {
         ProjectList.toDoEditForm.addEventListener('submit', function(event) {
@@ -129,7 +130,8 @@ class ProjectList {
                 ProjectList.toDoEditFormTitle.value,
                 ProjectList.toDoEditDescription.value,
                 ProjectList.toDoEditPriority.value,
-                ProjectList.projects[ProjectList.lastActiveProject].toDos.length);
+                parseISO(ProjectList.toDoEditDate.value),
+            )
             ProjectList.toDoEditFormTitle.value = "";
             ProjectList.toDoEditDescription.value = "";
             ProjectList.toDoEditPriority.value = "";
@@ -159,7 +161,6 @@ class ProjectList {
         if (ProjectList.getLocalStorage()) {
             this.projects = JSON.parse(this.localProjectList);
             this.projects = this.projects.map((element, index) => {
-                console.log(element);
                 let project = new Project(element.title, element.description, element.priority, element.toDos, index, element.completion, element.date);
                 return project;
             })
@@ -182,7 +183,7 @@ class ProjectList {
     }
 
     static removeProject(arrayIndex) {
-        console.log("deleting item at index " + arrayIndex);
+        
         if (ProjectList.lastActiveProject == arrayIndex) {
             ProjectList.projects[arrayIndex].clearToDos();
             ProjectList.projects[arrayIndex].renderToDoList();
@@ -244,9 +245,7 @@ class ProjectList {
         ProjectList.projectEditPanel.querySelector(".title").value = referenceProject.title;
         ProjectList.projectEditPanel.querySelector(".description").value = referenceProject.description;
         ProjectList.projectEditPanel.querySelector(".priority").value = Number(referenceProject.priority);
-        ProjectList.projectEditPanel.querySelector(".date").value = format(parseISO(referenceProject.date), "yyyy-MM-dd");
-        console.log(referenceProject.date);
-        console.log(format(parseISO(referenceProject.date), "yyyy-MM-dd"));
+        ProjectList.projectEditPanel.querySelector(".date").value = format(referenceProject.date, "yyyy-MM-dd");
     }
 
     static closeProjectAddPanel() {
@@ -262,18 +261,17 @@ class ProjectList {
     }
 
     static showToDoAddPanel() {
-        console.log("showAddPanel");
         document.body.appendChild(ProjectList.toDoAddPanel);
     }
 
     static showToDoEditPanel(indexOfToDo) {
-        console.log("showEditPanel");
         document.body.appendChild(ProjectList.toDoEditPanel);
         let referenceToDo = ProjectList.projects[this.lastActiveProject].toDos[indexOfToDo];
         ProjectList.toDoEditHeader.textContent = "Edit To-Do: ";
         ProjectList.toDoEditPanel.querySelector(".title").value = referenceToDo.title;
-        console.log("EDIT: " + referenceToDo.title)
         ProjectList.toDoEditPanel.querySelector(".description").value = referenceToDo.description;
+        console.log("Blah " + referenceToDo.date);
+        ProjectList.toDoEditPanel.querySelector(".date").value = format(referenceToDo.date, "yyyy-MM-dd");
         ProjectList.toDoEditPanel.querySelector(".priority").value = Number(referenceToDo.priority);
         ProjectList.lastEditedToDo = indexOfToDo;
     }
@@ -307,17 +305,17 @@ class Project {
         this.date = date;
     }
 
-    addToDo(title, description, priority) {
+    addToDo(title, description, priority, date) {
         console.log("addToDo arrayIndex = " + this.arrayIndex)
-        let newToDo = new ToDo(title, description, priority, this.arrayIndex, false, this.toDos.length);
+        let newToDo = new ToDo(title, description, priority, this.arrayIndex, false, this.toDos.length, date);
         this.toDos.push(newToDo);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
     }
 
-    editToDo(toDoToEdit, title, description, priority) {
+    editToDo(toDoToEdit, title, description, priority, date) {
         console.log(toDoToEdit)
-        toDoToEdit.updateDetails(title, description, priority);
+        toDoToEdit.updateDetails(title, description, priority, date);
         ProjectList.saveToLocalStorage();
         this.renderToDoList();
         // ProjectList.closeToDoEditPanel();
@@ -336,8 +334,9 @@ class Project {
     }
 
     initializeToDoList() {
-        this.toDos = this.toDos.map((element) => {
-            return new ToDo(element.title, element.description, element.priority, this.arrayIndex, element.completion);
+        this.toDos = this.toDos.map((element, index) => {
+            // console.log(element.date)
+            return new ToDo(element.title, element.description, element.priority, this.arrayIndex, element.completion, index, element.date);
         })
     }
 
@@ -409,29 +408,33 @@ class Project {
 }
 
 class ToDo {
-    constructor(title, description, priority, projectIndex, completion, index) {
+    constructor(title, description, priority, projectIndex, completion, index, date) {
         this.title = title,
         this.description = description,
         this.priority = priority,
         this.projectIndex = projectIndex,
         this.completion = completion,
         this.rootDomNode,
-        this.index = index
+        this.index = index,
+        this.date = date
     }
 
-    updateDetails(title, description, priority) {
+    updateDetails(title, description, priority, date) {
         this.title = title;
         this.description = description;
         this.priority = priority;
+        this.date = date;
     }
 
     renderToDo(index) {
         const tempContainer = document.createElement("div");
         this.index = index;
+        console.log(index);
         this.rootDomNode = tempContainer;
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
+        tempContainer.querySelector(".date").textContent = format(this.date, "M/d/yyyy");
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
@@ -453,7 +456,6 @@ class ToDo {
             this.completion = false;
         }
         this.renderToDoCompletion();
-        console.log("completion status now " + this.completion);
         ProjectList.saveToLocalStorage();
     }
 
