@@ -314,3 +314,8 @@ input.checkbox-gap {
 }
 
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: var(--primary); /* Blue background for the arrow */
+    border-radius: 50%;
+    padding: 5px;
+  }
