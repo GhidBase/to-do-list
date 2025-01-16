@@ -434,7 +434,7 @@ class ToDo {
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
-        tempContainer.querySelector(".date").textContent = format(this.date, "M/d/yyyy");
+        tempContainer.querySelector(".date").textContent = "Due by: " + format(this.date, "M/d/yyyy");
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
