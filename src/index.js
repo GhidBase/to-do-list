@@ -177,6 +177,8 @@ class ProjectList {
     static addProject(title, description, priority, date) {
         const newProject = new Project(title, description, priority, [], ProjectList.projects.length, false, date);
         const newProjectIndex = this.projects.push(newProject) - 1;
+        ProjectList.lastActiveProject = newProjectIndex;
+        ProjectList.projects[newProjectIndex].renderToDoList();
         newProject.setArrayIndex(newProjectIndex);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
@@ -196,9 +198,10 @@ class ProjectList {
         }
 
         ProjectList.projects = ProjectList.projects.filter((project) => ProjectList.projects[arrayIndex] != project);
-        ProjectList.chooseProjectIfNeeded();
+        
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
+        ProjectList.chooseProjectIfNeeded();
 
         if (ProjectList.projects.length == 0) {
             toDosNode.innerHTML = "";
