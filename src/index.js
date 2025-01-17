@@ -180,6 +180,7 @@ class ProjectList {
         newProject.setArrayIndex(newProjectIndex);
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
+        ProjectList.chooseProjectIfNeeded();
         return newProject;
     }
 
@@ -195,6 +196,7 @@ class ProjectList {
         }
 
         ProjectList.projects = ProjectList.projects.filter((project) => ProjectList.projects[arrayIndex] != project);
+        ProjectList.chooseProjectIfNeeded();
         ProjectList.saveToLocalStorage();
         ProjectList.renderProjectList();
 
@@ -203,6 +205,17 @@ class ProjectList {
             const toDosHeader = document.createElement("h1");
             toDosHeader.textContent = "To-Dos";
             toDosNode.appendChild(toDosHeader);
+        }
+    }
+
+    static chooseProjectIfNeeded() {
+        console.log("lastActiveProject" + ProjectList.lastActiveProject);
+        console.log("length " + ProjectList.projects.length);
+        if(ProjectList.projects.length == 0) {
+            ProjectList.lastActiveProject = null;
+        } else if (ProjectList.lastActiveProject >= ProjectList.projects.length || !ProjectList.lastActiveProject) {
+            ProjectList.lastActiveProject = 0;
+            ProjectList.projects[0].renderToDoList();
         }
     }
 
