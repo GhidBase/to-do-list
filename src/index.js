@@ -1,4 +1,4 @@
-import { format, formatDistance, formatRelative, subDays, parseISO } from 'date-fns';
+import { format, formatDistance, formatRelative, subDays, parseISO, isValid } from 'date-fns';
 
 class ProjectList {
     static projects = [];
@@ -246,7 +246,10 @@ class ProjectList {
         ProjectList.projectEditPanel.querySelector(".title").value = referenceProject.title;
         ProjectList.projectEditPanel.querySelector(".description").value = referenceProject.description;
         ProjectList.projectEditPanel.querySelector(".priority").value = Number(referenceProject.priority);
-        ProjectList.projectEditPanel.querySelector(".date").value = format(referenceProject.date, "yyyy-MM-dd");
+        if (isValid(referenceProject.date)) {
+            ProjectList.projectEditPanel.querySelector(".date").value = format(referenceProject.date, "yyyy-MM-dd");
+        }
+        
     }
 
     static closeProjectAddPanel() {
@@ -271,8 +274,9 @@ class ProjectList {
         ProjectList.toDoEditHeader.textContent = "Edit To-Do: ";
         ProjectList.toDoEditPanel.querySelector(".title").value = referenceToDo.title;
         ProjectList.toDoEditPanel.querySelector(".description").value = referenceToDo.description;
-        console.log("Blah " + referenceToDo.date);
-        ProjectList.toDoEditPanel.querySelector(".date").value = format(referenceToDo.date, "yyyy-MM-dd");
+        if (isValid(referenceToDo.date)) {
+            ProjectList.toDoEditPanel.querySelector(".date").value = format(referenceToDo.date, "yyyy-MM-dd");
+        }
         ProjectList.toDoEditPanel.querySelector(".priority").value = Number(referenceToDo.priority);
         ProjectList.lastEditedToDo = indexOfToDo;
     }
@@ -348,7 +352,9 @@ class Project {
         tempContainer.innerHTML = projectTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
-        tempContainer.querySelector(".date").textContent = "Due by: " + format(this.date, "M/d/yyyy");
+        if (isValid(this.date)){
+            tempContainer.querySelector(".date").textContent = "Due by: " + format(this.date, "M/d/yyyy");
+        }
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion());
@@ -435,7 +441,9 @@ class ToDo {
         tempContainer.innerHTML = toDoTemplate;
         tempContainer.querySelector("h2").textContent = this.title;
         tempContainer.querySelector(".description").textContent = this.description;
-        tempContainer.querySelector(".date").textContent = "Due by: " + format(this.date, "M/d/yyyy");
+        if(isValid(this.date)) {
+            tempContainer.querySelector(".date").textContent = "Due by: " + format(this.date, "M/d/yyyy");
+        }
         tempContainer.querySelector(".priority").textContent = "Priority: " + this.priority;
         tempContainer.querySelector(".checkbox-gap").checked = this.completion;
         tempContainer.querySelector(".checkbox-gap").addEventListener("change", () => this.toggleCompletion())
