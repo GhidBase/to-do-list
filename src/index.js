@@ -371,9 +371,9 @@ class Project {
     }
 
     renderToDoList() {
+        ProjectList.lastActiveProject = this.arrayIndex;
         this.clearToDoRenders();
         this.toDos.forEach((element, index) => element.renderToDo(index))
-        ProjectList.lastActiveProject = this.arrayIndex;
 
         if (ProjectList.projects.length == 0)
             return;
