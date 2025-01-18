@@ -7,6 +7,8 @@ import {
   isValid,
 } from "date-fns";
 
+import { Dropdown } from "./js/dropdown.js";
+
 class ProjectList {
   static projects = [];
   static localProjectList;
@@ -651,3 +653,6 @@ import addToDoTemplate from "./templates/add-to-do.html";
 import editPanelTemplate from "./templates/edit-project-window.html";
 
 ProjectList.initializeProjectList();
+
+const referenceToDropdown = document.querySelector(".drop-down");
+const dropDownObject = new Dropdown(referenceToDropdown)

@@ -55,7 +55,7 @@ body {
     box-sizing: border-box;
   }
 
-.drop-down {
+.header {
   width: 100dvw;
   box-sizing: border-box;
   padding-left: var(--general-spacing);
@@ -71,14 +71,41 @@ body {
   color: var(--on-background);
 }
 
-.drop-down button {
+.drop-down {
   background-color: var(--secondary);
   border: none;
   border-radius: var(--general-spacing) 0 0 var(--general-spacing);
   padding: 10px 15px;
   color: var(--on-secondary);
   font-size: 20px;
+
+  position: relative;
 }
+
+.drop-down-item-container {
+    position: absolute;
+    height: 100px;
+    top: 50%;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary);
+    z-index: -1;
+    padding-top: 20px;
+    border-radius:  0 0 0 var(--general-spacing);
+}
+
+.drop-down-item {
+    background-color: var(--secondary);
+    border: none;
+    border-radius: var(--general-spacing) 0 0 var(--general-spacing);
+    padding: 10px 15px;
+    color: var(--on-secondary);
+    font-size: 20px;
+    width: 100%;
+  
+    position: relative;
+  }
+
 
 
 
