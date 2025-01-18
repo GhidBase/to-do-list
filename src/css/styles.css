@@ -45,11 +45,10 @@ textarea {
 .drop-down {
   width: 100dvw;
   box-sizing: border-box;
-  padding-left: var(--general-spacing);
+  padding: 0 var(--general-spacing);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   gap: var(--general-spacing);
 }
 
@@ -76,7 +75,7 @@ body {
   background-color: var(--background);
   display: grid;
   grid-template-columns: calc(clamp(220px, 30%, 550px)) auto;
-  grid-template-rows: 150px var(--general-spacing) auto;
+  grid-template-rows: 100px var(--general-spacing) auto;
   /* padding-top: var(--general-spacing); */
   box-sizing: border-box;
 }
