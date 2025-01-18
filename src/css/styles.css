@@ -86,7 +86,7 @@ body {
 
 .drop-down-item-container {
     position: absolute;
-    height: 100px;
+    height: fit-content;
     top: 50%;
     left: 0;
     right: 0;

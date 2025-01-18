@@ -13,13 +13,15 @@ export class Dropdown {
 
   dropdownItemContainerSetup() {
     this.dropdownItemContainer.classList.add("drop-down-item-container");
-    this.dropdownItemContainer.appendChild(this.createDropdownItem("Tic-Tac-Toe"));
+    this.appendDropdownItem("Tic-Tac-Toe");
+    this.appendDropdownItem("Lucky Defense Guides");
   }
 
-  createDropdownItem(title) {
+  appendDropdownItem(title) {
     const newItem =  document.createElement("button");
     newItem.textContent = title;
-    newItem.classList.add("drop-down-item")
+    newItem.classList.add("drop-down-item");
+    this.dropdownItemContainer.appendChild(newItem);
     return newItem;
   }
 
