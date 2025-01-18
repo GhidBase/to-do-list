@@ -2,8 +2,8 @@ export class Dropdown {
   constructor(targetDropdown) {
     this.targetDropdown = targetDropdown;
     this.dropdownItemContainer = document.createElement("div");
-    this.initialize();
     this.displayBool = false;
+    this.initialize();
   }
 
   initialize() {

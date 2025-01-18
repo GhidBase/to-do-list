@@ -50,8 +50,8 @@ body {
     background-color: var(--background);
     display: grid;
     grid-template-columns: calc(clamp(220px, 30%, 550px)) auto;
-    grid-template-rows: 100px var(--general-spacing) auto;
-    /* padding-top: var(--general-spacing); */
+    grid-template-rows: 1fr;
+    padding-top: var(--general-spacing);
     box-sizing: border-box;
   }
 
@@ -72,6 +72,8 @@ body {
 }
 
 .drop-down {
+  position: absolute;
+  right: 0;
   background-color: var(--secondary);
   border: none;
   border-radius: var(--general-spacing) 0 0 var(--general-spacing);
@@ -80,7 +82,6 @@ body {
   font-size: 20px;
   z-index: 3;
 
-  position: relative;
 }
 
 .drop-down-item-container {
