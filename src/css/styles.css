@@ -78,6 +78,7 @@ body {
   padding: 10px 15px;
   color: var(--on-secondary);
   font-size: 20px;
+  z-index: 3;
 
   position: relative;
 }
