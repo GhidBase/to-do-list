@@ -42,10 +42,23 @@ textarea {
   resize: none;
 }
 
+body {
+    height: 100dvh;
+    width: 100dvw;
+    margin: 0;
+  
+    background-color: var(--background);
+    display: grid;
+    grid-template-columns: calc(clamp(220px, 30%, 550px)) auto;
+    grid-template-rows: 100px var(--general-spacing) auto;
+    /* padding-top: var(--general-spacing); */
+    box-sizing: border-box;
+  }
+
 .drop-down {
   width: 100dvw;
   box-sizing: border-box;
-  padding: 0 var(--general-spacing);
+  padding-left: var(--general-spacing);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,24 +74,13 @@ textarea {
 .drop-down button {
   background-color: var(--secondary);
   border: none;
-  border-radius: var(--general-spacing);
+  border-radius: var(--general-spacing) 0 0 var(--general-spacing);
   padding: 10px 15px;
   color: var(--on-secondary);
   font-size: 20px;
 }
 
-body {
-  height: 100dvh;
-  width: 100dvw;
-  margin: 0;
 
-  background-color: var(--background);
-  display: grid;
-  grid-template-columns: calc(clamp(220px, 30%, 550px)) auto;
-  grid-template-rows: 100px var(--general-spacing) auto;
-  /* padding-top: var(--general-spacing); */
-  box-sizing: border-box;
-}
 
 #to-dos {
   padding-right: var(--general-spacing);
