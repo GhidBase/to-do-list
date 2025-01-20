@@ -122,9 +122,6 @@ body {
 
 #projects,
 #to-dos {
-  /* background-color: var(--surface);
-    border-radius: var(--general-spacing); */
-  /* padding: var(--general-spacing); */
   gap: var(--general-spacing);
 
   display: flex;
