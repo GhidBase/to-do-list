@@ -113,13 +113,11 @@ body {
 
 #to-dos {
   padding-right: var(--general-spacing);
-  grid-row: 3;
 }
 
 #projects {
   padding-left: var(--general-spacing);
   padding-right: var(--general-spacing);
-  grid-row: 3;
 }
 
 #projects,
