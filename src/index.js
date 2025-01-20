@@ -655,4 +655,4 @@ import editPanelTemplate from "./templates/edit-project-window.html";
 ProjectList.initializeProjectList();
 
 const referenceToDropdown = document.querySelector(".drop-down");
-const dropDownObject = new Dropdown(referenceToDropdown)
+const dropDownObject = new Dropdown(referenceToDropdown);

@@ -13,25 +13,31 @@ export class Dropdown {
 
   dropdownItemContainerSetup() {
     this.dropdownItemContainer.classList.add("drop-down-item-container");
-    this.appendDropdownItem("Tic-Tac-Toe", "https://ghidbase.github.io/tic-tac-toe/");
-    this.appendDropdownItem("Lucky Defense Guides", "https://luckydefenseguides.com/");
+    this.appendDropdownItem(
+      "Tic-Tac-Toe",
+      "https://ghidbase.github.io/tic-tac-toe/"
+    );
+    this.appendDropdownItem(
+      "Lucky Defense Guides",
+      "https://luckydefenseguides.com/"
+    );
   }
 
   appendDropdownItem(title, link) {
-    const newItem =  document.createElement("button");
+    const newItem = document.createElement("button");
     newItem.textContent = title;
     newItem.classList.add("drop-down-item");
     newItem.onclick = () => {
-      window.open(link, '_blank');
-    }
+      window.open(link, "_blank");
+    };
     this.dropdownItemContainer.appendChild(newItem);
     return newItem;
   }
 
   toggleDisplay() {
-    this.displayBool = this.displayBool ? false :  true;
+    this.displayBool = this.displayBool ? false : true;
     if (this.displayBool) this.displayOptions();
-        else this.hideOptions();
+    else this.hideOptions();
   }
 
   displayOptions() {
