@@ -13,6 +13,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "dylans-drop-down-links": "^1.0.0"
   }
 }

@@ -7,7 +7,7 @@ import {
   isValid,
 } from "date-fns";
 
-import { Dropdown } from "./js/dropdown.js";
+import Dropdown from "dylans-drop-down-links";
 
 class ProjectList {
   static projects = [];
